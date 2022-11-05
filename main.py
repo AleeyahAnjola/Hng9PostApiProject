@@ -4,6 +4,7 @@
 from flask import Flask, request, jsonify
 import os
 import openai
+from openai.api_resources import completion
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -35,8 +36,10 @@ def postapimethod():
             presence_penalty=0
         )
         try:
+            response = response.choices[0].text
             result = response.split("=")[-1].strip()
         except:
-            result = response
+            result = response.choices[0].text
+
 
     return jsonify({"slackUsername": "Hassan Aleeyah", "operation_type": data["operation_type"], "result": result})
